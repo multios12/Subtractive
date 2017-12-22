@@ -67,22 +67,12 @@ namespace Subtractive.Properties {
         ///    　・PowerPointプレゼンテーションファイル(pptx)
         ///    また、旧型式のAccessデータベースファイルの圧縮も行えます。
         ///    　・Access2000-2003データベースファイル(mdb)
-        ///このプログラムは減色ライブラリにpngQuantを使用しています。
+        ///減色ライブラリにpngQuant.exeが必要です。
         ///------------------------------------------------------------ に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string CopyRight {
             get {
                 return ResourceManager.GetString("CopyRight", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Byte[] のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static byte[] pngquant {
-            get {
-                object obj = ResourceManager.GetObject("pngquant", resourceCulture);
-                return ((byte[])(obj));
             }
         }
     }

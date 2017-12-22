@@ -117,10 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="pngquant" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\pngquant.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="CopyRight" xml:space="preserve">
     <value>Subtractive - PNGファイルを256色インデックスに減色します。
     PNGファイルが含まれる以下のようなファイルにも対応します。
@@ -128,7 +124,7 @@
     　・PowerPointプレゼンテーションファイル(pptx)
     また、旧型式のAccessデータベースファイルの圧縮も行えます。
     　・Access2000-2003データベースファイル(mdb)
-このプログラムは減色ライブラリにpngQuantを使用しています。
+減色ライブラリにpngQuant.exeが必要です。
 ------------------------------------------------------------</value>
   </data>
 </root>
