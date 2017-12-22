@@ -1,10 +1,9 @@
-﻿namespace ArchiveXlsx
+﻿namespace Subtractive
 {
     using System;
     using System.Diagnostics;
     using System.IO;
     using System.IO.Compression;
-    using Subtractive.Properties;
 
     /// <summary>PNG減色処理クラス</summary>
     public class PngQuant : IDisposable
@@ -33,6 +32,51 @@
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>Pngquant.exeを検索し、見つからない場合Falseを返します。</summary>
+        /// <returns>Pngquant.exeが見つかった場合、true</returns>
+        public bool SearchPngquantExe()
+        {
+            string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            appPath = Path.GetDirectoryName(appPath);
+
+            // exeの検索
+            string exePath = Path.Combine(appPath, "pngquant.exe");
+            if (File.Exists(exePath))
+            {
+                this._exePath = exePath;
+                return true;
+            }
+
+            // ZIPファイルの検索、見つからなければ、インターネットからダウンロードを試みる
+            string zipPath = Path.Combine(appPath, "pngquant-windows.zip");
+            if (!File.Exists(zipPath))
+            {
+                using (var client = new System.Net.WebClient())
+                {
+                    Console.WriteLine("pngquant.exeをダウンロードします");
+                    client.DownloadFile("https://pngquant.org/pngquant-windows.zip", zipPath);
+                }
+            }
+
+            // ZIPファイルの展開
+            using (var zipFile = ZipFile.OpenRead(zipPath))
+            {
+                foreach (var entry in zipFile.Entries)
+                {
+                    if (entry.Name.ToLower() != "pngquant.exe")
+                    {
+                        continue;
+                    }
+
+                    entry.ExtractToFile(exePath);
+                    this._exePath = exePath;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>指定したpngファイルを減色します。</summary>
         /// <param name="filePath">pngファイルのファイルパス</param>
         public void Subtractive(string filePath)
@@ -40,11 +84,10 @@
             // pngquant.exeが展開されていない場合、展開します。
             if (this._exePath == null)
             {
-                this._exePath = Path.Combine(this._temporaryFolderPath, "pngquant.exe");
-                using (MemoryStream s = new MemoryStream(Resources.pngquant))
+                bool existsExe = this.SearchPngquantExe();
+                if (!existsExe)
                 {
-                    ZipArchive archive = new ZipArchive(s);
-                    archive.GetEntry("pngquant.exe").ExtractToFile(this._exePath);
+                    return;
                 }
             }
 
@@ -79,12 +122,6 @@
             {
                 if (disposing)
                 {
-                    // pngquant.exeが展開されている場合、削除します。
-                    if (File.Exists(this._exePath) == true)
-                    {
-                        File.Delete(this._exePath);
-                    }
-
                     // 一時フォルダを削除します。
                     Directory.Delete(this._temporaryFolderPath, true);
                 }

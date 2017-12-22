@@ -1,4 +1,4 @@
-﻿namespace ArchiveXlsx
+﻿namespace Subtractive
 {
     using System.IO;
 

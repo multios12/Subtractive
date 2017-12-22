@@ -1,4 +1,4 @@
-﻿namespace Subtractive
+﻿namespace Subtractive.Processor
 {
     using System.Diagnostics;
     using System.IO;
@@ -7,13 +7,16 @@
     /// <summary>
     /// MDBファイル圧縮処理クラス
     /// </summary>
-    public class MdbCompactation
+    public class MdbProcessor : IProcessor
     {
+        /// <summary>拡張子</summary>
+        public string[] Extensions => new string[] { ".mdb" };
+
         /// <summary>
         /// 指定されたMDBファイルを圧縮します。
         /// </summary>
-        /// <param name="filePaths">MDBファイル</param>
-        public static void compact(params string[] filePaths)
+        /// <param name="filePath">MDBファイル</param>
+        public void Execute(string filePath)
         {
             // mdbファイルに関連付けられている実行コマンドを取得する
             string exePath = GetShellCommandFromClassesRoot("Access.MDBFile");
@@ -23,15 +26,12 @@
                 return;
             }
 
-            foreach (string filePath in filePaths)
-            {
                 // 関連付け情報を利用してプロセスを起動し、圧縮を行う
                 Process process = new Process();
                 process.StartInfo.FileName = filePath;
                 process.StartInfo.Arguments = @"/compact";
                 process.Start();
                 process.WaitForExit(10000);
-            }
         }
 
         #region 関連付け情報操作
@@ -42,7 +42,7 @@
         /// <param name="extra">アクション(open,print,editなど)</param>
         /// <returns>取得できた時は、コマンド(実行ファイルのパス+コマンドライン引数)。
         /// 取得できなかった時は、空の文字列。</returns>
-        public static string FindAssociatedCommand(string filePath, string extra)
+        private static string FindAssociatedCommand(string filePath, string extra)
         {
             // 拡張子を取得
             string extName = Path.GetExtension(filePath);
@@ -78,7 +78,7 @@
         /// 取得できた時は、コマンド(実行ファイルのパス+コマンドライン引数)。<br />
         /// 取得できなかった時は、空の文字列。
         /// </returns>
-        public static string FindAssociatedCommand(string filePath)
+        private static string FindAssociatedCommand(string filePath)
         {
             return FindAssociatedCommand(filePath, "open");
         }
