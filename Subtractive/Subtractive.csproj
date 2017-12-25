@@ -78,6 +78,7 @@
     <Compile Include="PngQuant.cs" />
     <Compile Include="Processor\ExcelProcessor.cs" />
     <Compile Include="Processor\IProcessor.cs" />
+    <Compile Include="Processor\WordProcessor.cs" />
     <Compile Include="Processor\PowerpointProcessor.cs" />
     <Compile Include="Processor\ZipProcessor.cs" />
     <Compile Include="Program.cs" />
@@ -86,6 +87,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="StreamEntensions.cs" />
   </ItemGroup>
@@ -120,6 +126,10 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
