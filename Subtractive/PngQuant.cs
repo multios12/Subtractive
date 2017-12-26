@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Drawing;
     using System.IO;
     using System.IO.Compression;
 
@@ -103,13 +104,25 @@
             process.WaitForExit();
         }
 
-        /// <summary>指定したストリームをファイルに保存し、減色します。</summary>
+        /// <summary>指定したエントリをPNGファイルとして保存し、減色します。</summary>
         /// <param name="entry">エントリ</param>
         /// <returns>ファイルパス</returns>
         public string SubtractiveToTemporaryFile(ZipArchiveEntry entry)
         {
             string entryFilePath = Path.Combine(this._temporaryFolderPath, Path.GetRandomFileName() + ".png");
-            entry.ExtractToFile(entryFilePath);
+            if (Path.GetExtension(entry.Name).ToLower() != ".png")
+            {
+                using (Stream stream = entry.Open())
+                using (Image i = Image.FromStream(stream))
+                {
+                    i.Save(entryFilePath, System.Drawing.Imaging.ImageFormat.Png);
+                }
+            }
+            else
+            {
+                entry.ExtractToFile(entryFilePath);
+            }
+
             this.Subtractive(entryFilePath);
             return entryFilePath;
         }

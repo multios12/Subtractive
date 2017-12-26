@@ -25,13 +25,13 @@ namespace Subtractive.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FileNameHeader {
+        [global::System.Configuration.DefaultSettingValueAttribute("減色済{0}")]
+        public string FileNameTemplate {
             get {
-                return ((string)(this["FileNameHeader"]));
+                return ((string)(this["FileNameTemplate"]));
             }
             set {
-                this["FileNameHeader"] = value;
+                this["FileNameTemplate"] = value;
             }
         }
     }

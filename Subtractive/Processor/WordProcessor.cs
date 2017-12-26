@@ -6,7 +6,7 @@
     public class WordProcessor : ZipProcessor
     {
         /// <summary>拡張子</summary>
-        public override string[] Extensions => new string[] { ".docx" };
+        public override string[] Extensions => new string[] { ".docx", ".docm" };
 
         /// <summary>
         /// 処理を実行します

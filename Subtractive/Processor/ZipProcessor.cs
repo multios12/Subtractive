@@ -14,6 +14,9 @@
         /// <summary>拡張子</summary>
         public virtual string[] Extensions => new string[] { ".zip" };
 
+        /// <summary>BMP/JPEGをPNGにコンバートする場合、True</summary>
+        public virtual bool IsConvertToPng { get; set; } = false;
+
         /// <summary>
         /// 処理を実行します
         /// </summary>
@@ -24,63 +27,47 @@
         }
 
         /// <summary>指定されたエクセルブックファイルに含まれる画像を圧縮します。</summary>
-        /// <param name="filePath">ファイルパス</param>
+        /// <param name="sourceFilePath">ファイルパス</param>
         /// <param name="targetInnerPath">処理対象内部パス</param>
-        internal void QuantFromZipFile(string filePath, string targetInnerPath = "")
+        internal void QuantFromZipFile(string sourceFilePath, string targetInnerPath = "")
         {
-            Regex regex = new Regex(targetInnerPath + @".*\.png");
+            string reg = this.IsConvertToPng ? @"{0}.*\.png|{0}.*\.jpeg|{0}.*\.jpg|{0}.*\.bmp" : @"{0}.*\.png";
+            reg = string.Format(reg, targetInnerPath);
+            Regex regex = new Regex(reg);
 
-            Console.WriteLine("減色を開始します：{0}", filePath);
+            Console.WriteLine("減色を開始します：{0}", sourceFilePath);
 
-            string uncompressPath = Path.GetTempPath();
+            string distinationFileName = string.Format(Properties.Settings.Default.FileNameTemplate, Path.GetFileName(sourceFilePath));
+            string distinationFilePath = Path.GetDirectoryName(sourceFilePath);
+            distinationFilePath = Path.Combine(distinationFilePath, distinationFileName);
 
-            ZipArchive archive = null;
-            PngQuant pngquant = new PngQuant();
-            string distinationFilePath = Path.GetDirectoryName(filePath);
-            distinationFilePath = Path.Combine(distinationFilePath, "減色済" + Path.GetFileName(filePath));
-            ZipArchive distinationArchive =
-                new ZipArchive(new FileStream(distinationFilePath, FileMode.Create, FileAccess.Write), ZipArchiveMode.Create);
-            try
+            using (ZipArchive archive = ZipFile.Open(sourceFilePath, ZipArchiveMode.Read))
+            using (ZipArchive distinationArchive = new ZipArchive(new FileStream(distinationFilePath, FileMode.Create, FileAccess.Write), ZipArchiveMode.Create))
+            using (PngQuant pngquant = new PngQuant())
             {
-                archive = ZipFile.Open(filePath, ZipArchiveMode.Read);
-                IEnumerable<ZipArchiveEntry> entries = archive.Entries;
-
-                foreach (ZipArchiveEntry entry in entries)
+                foreach (ZipArchiveEntry entry in archive.Entries)
                 {
                     if (regex.IsMatch(entry.FullName.ToLower()) == false)
                     {
                         using (Stream stream = entry.Open())
+                        using (Stream s = distinationArchive.CreateEntry(entry.FullName, CompressionLevel.Optimal).Open())
                         {
-                            ZipArchiveEntry e = distinationArchive.CreateEntry(entry.FullName, CompressionLevel.Optimal);
-                            using (Stream s = e.Open())
-                            {
-                                byte[] bs = stream.ToByteArray((int)entry.Length);
-                                s.Write(bs, 0, bs.Length);
-                            }
+                            byte[] bs = stream.ToByteArray((int)entry.Length);
+                            s.Write(bs, 0, bs.Length);
                         }
 
                         continue;
                     }
 
                     // 解凍して一時ファイルを作成し、減色する
-                    string entryFilePath = Path.GetTempFileName();
-                    entryFilePath = pngquant.SubtractiveToTemporaryFile(entry);
+                    string entryFilePath = pngquant.SubtractiveToTemporaryFile(entry);
+                    string distEntryName = Path.GetFileNameWithoutExtension(entry.Name) + Path.GetExtension(entryFilePath);
+                    distEntryName = Path.Combine(Path.GetDirectoryName(entry.FullName), distEntryName);
 
                     // 減色したファイルをブックに再設定
-                    distinationArchive.CreateEntryFromFile(entryFilePath, entry.FullName, CompressionLevel.Optimal);
+                    distinationArchive.CreateEntryFromFile(entryFilePath, distEntryName, CompressionLevel.Optimal);
                     Console.WriteLine("・{0}", entry.FullName);
                 }
-            }
-            finally
-            {
-                distinationArchive.Dispose();
-
-                if (archive != null)
-                {
-                    archive.Dispose();
-                }
-
-                pngquant.Dispose();
             }
         }
     }

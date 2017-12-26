@@ -66,6 +66,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WordProcessorUnitTest.cs" />
     <Compile Include="ExcelProcessorUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZipProcessorUnitTest.cs" />

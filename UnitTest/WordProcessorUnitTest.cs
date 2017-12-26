@@ -1,17 +1,21 @@
 ﻿namespace UnitTest
 {
-    using System.IO;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Subtractive.Processor;
+    using System.IO;
 
     [TestClass]
-    public class ZipProcessorUnitTest
+    public class WordProcessorUnitTest
     {
-        ZipProcessor processor = new ZipProcessor() { IsConvertToPng = true };
+        WordProcessor processor = new WordProcessor();
+
+
 
         [DataTestMethod]
-        [DataRow(@"Resources\jpeg01.zip")]
-        [DataRow(@"Resources\png01.zip")]
+        [DataRow(@"Resources\WordPng.docm")]
+        [DataRow(@"Resources\WordPng.docx")]
+        [DataRow(@"Resources\WordJpeg.docm")]
+        [DataRow(@"Resources\WordJpeg.docx")]
         public void ExecuteTest(string filePath)
         {
             processor.Execute(filePath);

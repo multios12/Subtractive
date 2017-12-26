@@ -2,8 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Subtractive.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="FileNameHeader" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="FileNameTemplate" Type="System.String" Scope="User">
+      <Value Profile="(Default)">減色済{0}</Value>
     </Setting>
   </Settings>
 </SettingsFile>
