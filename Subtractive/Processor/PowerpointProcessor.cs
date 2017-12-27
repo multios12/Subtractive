@@ -5,6 +5,14 @@
     /// </summary>
     public class PowerpointProcessor : ZipProcessor
     {
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public PowerpointProcessor()
+        {
+            this.IsConvertToPng = false;
+        }
+
         /// <summary>拡張子</summary>
         public override string[] Extensions => new string[] { ".pptx" };
 

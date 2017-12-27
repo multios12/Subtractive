@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Processor\FileNameChangedEventArgs.cs" />
     <Compile Include="Processor\MdbProcessor.cs" />
     <Compile Include="PngQuant.cs" />
     <Compile Include="Processor\ExcelProcessor.cs" />
@@ -95,6 +96,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="StreamEntensions.cs" />
+    <Compile Include="ZipArchiveExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
