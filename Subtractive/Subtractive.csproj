@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PathUtils.cs" />
     <Compile Include="Processor\FileNameChangedEventArgs.cs" />
     <Compile Include="Processor\MdbProcessor.cs" />
     <Compile Include="PngQuant.cs" />

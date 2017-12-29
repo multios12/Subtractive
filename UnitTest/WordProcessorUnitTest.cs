@@ -9,8 +9,6 @@
     {
         WordProcessor processor = new WordProcessor();
 
-
-
         [DataTestMethod]
         [DataRow(@"Resources\WordPng.docm")]
         [DataRow(@"Resources\WordPng.docx")]

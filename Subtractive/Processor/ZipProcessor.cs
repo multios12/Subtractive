@@ -11,7 +11,7 @@
     public class ZipProcessor : IProcessor
     {
         /// <summary>ファイル名変更完了イベント</summary>
-        public event EventHandler<FileNameChangedEventArgs> FileNameChanged;
+        public event EventHandler<QuantedEventArgs> FileNameChanged;
 
         /// <summary>拡張子</summary>
         public virtual string[] Extensions => new string[] { ".zip" };
@@ -48,38 +48,27 @@
             this.OutputFilePath = distinationFilePath;
 
             using (ZipArchive archive = ZipFile.Open(sourceFilePath, ZipArchiveMode.Read))
-            using (ZipArchive distinationArchive = new ZipArchive(new FileStream(distinationFilePath, FileMode.Create, FileAccess.Write), ZipArchiveMode.Create))
+            using (ZipArchive distArchive = new ZipArchive(new FileStream(distinationFilePath, FileMode.Create, FileAccess.Write), ZipArchiveMode.Create))
             using (PngQuant pngquant = new PngQuant())
             {
                 foreach (ZipArchiveEntry entry in archive.Entries)
                 {
                     if (regex.IsMatch(entry.FullName.ToLower()) == false)
                     {
-                        using (Stream stream = entry.Open())
-                        using (Stream s = distinationArchive.CreateEntry(entry.FullName, CompressionLevel.Optimal).Open())
-                        {
-                            byte[] bs = stream.ToByteArray((int)entry.Length);
-                            s.Write(bs, 0, bs.Length);
-                        }
-
+                        distArchive.CreateEntry(entry.FullName, entry);
                         continue;
                     }
 
                     // 解凍して一時ファイルを作成し、減色する
                     string entryFilePath = pngquant.SubtractiveToTemporaryFile(entry);
-                    string distEntryName = Path.GetFileNameWithoutExtension(entry.Name) + Path.GetExtension(entryFilePath);
-                    distEntryName = Path.Combine(Path.GetDirectoryName(entry.FullName), distEntryName);
 
                     // 減色したファイルをブックに再設定
-                    distinationArchive.CreateEntryFromFile(entryFilePath, distEntryName, CompressionLevel.Optimal);
+                    string distEntryName = PathUtils.ChangeExtension(entry.FullName, Path.GetExtension(entryFilePath));
+                    distArchive.CreateEntryFromFile(entryFilePath, distEntryName, CompressionLevel.Optimal);
                     Console.WriteLine("・{0}", entry.FullName);
 
                     // 変換イベントを発生させる
-                    FileNameChangedEventArgs args = new FileNameChangedEventArgs() { OldFileName = entry.FullName, NewFileName = distEntryName };
-                    if (this.FileNameChanged != null)
-                    {
-                        this.FileNameChanged(this, args);
-                    }
+                    this.FileNameChanged?.Invoke(this, new QuantedEventArgs(entry.FullName, distEntryName));
                 }
             }
         }

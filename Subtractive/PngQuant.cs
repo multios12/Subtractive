@@ -127,6 +127,14 @@
             return entryFilePath;
         }
 
+        public string SubtractiveToTemporaryFile(Image image)
+        {
+            string entryFilePath = Path.Combine(this._temporaryFolderPath, Path.GetRandomFileName() + ".png");
+            image.Save(entryFilePath, System.Drawing.Imaging.ImageFormat.Png);
+            this.Subtractive(entryFilePath);
+            return entryFilePath;
+        }
+
         /// <summary>アンマネージ リソースの解放およびリセットに関連付けられているアプリケーション定義のタスクを実行します。</summary>
         /// <param name="disposing">ディスポーズ</param>
         protected virtual void Dispose(bool disposing)

@@ -1,5 +1,6 @@
 ﻿namespace Subtractive
 {
+    using System.Drawing;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -11,6 +12,23 @@
     /// </summary>
     public static class ZipArchiveExtensions
     {
+
+        /// <summary>
+        /// 指定されたエントリを指定されたエントリパスに保存します。
+        /// </summary>
+        /// <param name="zipArchive">アーカイブファイル</param>
+        /// <param name="entryPath">エントリパス</param>
+        /// <param name="entry">保存するエントリ</param>
+        public static void CreateEntry(this ZipArchive zipArchive, string entryPath, ZipArchiveEntry entry)
+        {
+            using (Stream stream = entry.Open())
+            using (Stream s = zipArchive.CreateEntry(entry.FullName, CompressionLevel.Optimal).Open())
+            {
+                byte[] bs = stream.ToByteArray((int)entry.Length);
+                s.Write(bs, 0, bs.Length);
+            }
+        }
+
         /// <summary>
         /// アーカイブファイルから、指定されたエントリを読み取り、テキストとして返します。
         /// </summary>
@@ -24,6 +42,19 @@
             using (StreamReader reader = new StreamReader(stream, encoding))
             {
                 return reader.ReadToEnd();
+            }
+        }
+
+        /// <summary>
+        /// アーカイブファイルから、指定されたエントリを読み取り、イメージとして返します。
+        /// </summary>
+        /// <param name="zipArchive">アーカイブファイル</param>
+        /// <param name="entryPath">読み取るエントリ</param>
+        public static Image ReadImage(this ZipArchive zipArchive, string entryPath)
+        {
+            using (Stream stream = zipArchive.GetEntry(entryPath).Open())
+            {
+                return Image.FromStream(stream);
             }
         }
 
