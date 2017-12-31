@@ -84,6 +84,8 @@
     <Compile Include="PngQuant.cs" />
     <Compile Include="Processor\ExcelProcessor.cs" />
     <Compile Include="Processor\IProcessor.cs" />
+    <Compile Include="Processor\NullProcessor.cs" />
+    <Compile Include="Processor\ProcessorFactory.cs" />
     <Compile Include="Processor\WordProcessor.cs" />
     <Compile Include="Processor\PowerpointProcessor.cs" />
     <Compile Include="Processor\ZipProcessor.cs" />
