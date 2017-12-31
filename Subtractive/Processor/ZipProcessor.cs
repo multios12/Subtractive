@@ -60,7 +60,7 @@
                     }
 
                     // 解凍して一時ファイルを作成し、減色する
-                    string entryFilePath = pngquant.SubtractiveToTemporaryFile(entry);
+                    string entryFilePath = entry.SubtractiveToTemporaryFile(pngquant);
 
                     // 減色したファイルをブックに再設定
                     string distEntryName = PathUtils.ChangeExtension(entry.FullName, Path.GetExtension(entryFilePath));

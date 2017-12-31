@@ -78,12 +78,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageExtensions.cs" />
     <Compile Include="PathUtils.cs" />
     <Compile Include="Processor\FileNameChangedEventArgs.cs" />
     <Compile Include="Processor\MdbProcessor.cs" />
     <Compile Include="PngQuant.cs" />
     <Compile Include="Processor\ExcelProcessor.cs" />
     <Compile Include="Processor\IProcessor.cs" />
+    <Compile Include="Processor\NullProcessor.cs" />
+    <Compile Include="Processor\ProcessorFactory.cs" />
     <Compile Include="Processor\WordProcessor.cs" />
     <Compile Include="Processor\PowerpointProcessor.cs" />
     <Compile Include="Processor\ZipProcessor.cs" />
@@ -100,6 +103,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="StreamEntensions.cs" />
+    <Compile Include="ZipArchiveEntryExtensions.cs" />
     <Compile Include="ZipArchiveExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +142,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

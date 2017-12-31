@@ -12,7 +12,6 @@
     /// </summary>
     public static class ZipArchiveExtensions
     {
-
         /// <summary>
         /// 指定されたエントリを指定されたエントリパスに保存します。
         /// </summary>
