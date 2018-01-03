@@ -61,10 +61,11 @@ namespace Subtractive.Properties {
         }
         
         /// <summary>
-        ///   Subtractive - PNGファイルを256色インデックスに減色します。
-        ///    PNGファイルが含まれる以下のようなファイルにも対応します。
+        ///   Subtractive - 圧縮ファイル内の画像をPNGファイル256色インデックスに減色します。
+        ///    画像ファイルが含まれる以下のようなファイルにも対応します。
         ///    　・Excelブックファイル(xlsx・xlsm)
         ///    　・PowerPointプレゼンテーションファイル(pptx)
+        ///        ・Wordドキュメントファイル(docx・docm)
         ///    また、旧型式のAccessデータベースファイルの圧縮も行えます。
         ///    　・Access2000-2003データベースファイル(mdb)
         ///減色ライブラリにpngQuant.exeが必要です。

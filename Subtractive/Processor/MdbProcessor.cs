@@ -1,6 +1,7 @@
 ﻿namespace Subtractive.Processor
 {
     using System.Diagnostics;
+    using System.Drawing;
     using System.IO;
     using Microsoft.Win32;
 
@@ -11,6 +12,9 @@
     {
         /// <summary>拡張子</summary>
         public string[] Extensions => new string[] { ".mdb" };
+
+        /// <summary>リサイズ時の最大サイズ</summary>
+        public Size? ResizeSize { get; set; } = null;
 
         /// <summary>
         /// 指定されたMDBファイルを圧縮します。

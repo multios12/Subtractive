@@ -5,5 +5,11 @@
     <Setting Name="FileNameTemplate" Type="System.String" Scope="User">
       <Value Profile="(Default)">減色済{0}</Value>
     </Setting>
+    <Setting Name="ResizeMinHeight" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">800</Value>
+    </Setting>
+    <Setting Name="ResizeMinWidth" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1400</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -1,5 +1,6 @@
 ﻿namespace Subtractive.Processor
 {
+    using System.Drawing;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -25,6 +26,9 @@
 
         /// <summary>拡張子</summary>
         public override string[] Extensions => new string[] { ".docx", ".docm" };
+
+        /// <summary>リサイズ時の最大サイズ</summary>
+        public new Size? ResizeSize { get; set; } = null;
 
         /// <summary>
         /// 処理を実行します

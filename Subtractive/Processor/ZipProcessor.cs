@@ -1,6 +1,7 @@
 ﻿namespace Subtractive.Processor
 {
     using System;
+    using System.Drawing;
     using System.IO;
     using System.IO.Compression;
     using System.Text.RegularExpressions;
@@ -10,6 +11,18 @@
     /// </summary>
     public class ZipProcessor : IProcessor
     {
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public ZipProcessor()
+        {
+            if (Properties.Settings.Default.ResizeMinWidth > 0 &&
+                Properties.Settings.Default.ResizeMinHeight > 0)
+            {
+                this.ResizeSize = new Size(Properties.Settings.Default.ResizeMinWidth, Properties.Settings.Default.ResizeMinHeight);
+            }
+        }
+
         /// <summary>ファイル名変更完了イベント</summary>
         public event EventHandler<QuantedEventArgs> FileNameChanged;
 
@@ -21,6 +34,9 @@
 
         /// <summary>出力したファイルのパス</summary>
         public virtual string OutputFilePath { get; set; }
+
+        /// <summary>リサイズ時の最大サイズ</summary>
+        public Size? ResizeSize { get; set; } = null;
 
         /// <summary>
         /// 処理を実行します
@@ -60,7 +76,7 @@
                     }
 
                     // 解凍して一時ファイルを作成し、減色する
-                    string entryFilePath = entry.SubtractiveToTemporaryFile(pngquant);
+                    string entryFilePath = pngquant.Subtractive(entry);
 
                     // 減色したファイルをブックに再設定
                     string distEntryName = PathUtils.ChangeExtension(entry.FullName, Path.GetExtension(entryFilePath));

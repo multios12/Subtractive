@@ -14,9 +14,11 @@
         [DataRow(@"Resources\png01.zip")]
         public void ExecuteTest(string filePath)
         {
+            Assert.IsNotNull(processor.ResizeSize);
+            Assert.AreEqual<int>(800, processor.ResizeSize.Value.Height);
+            Assert.AreEqual<int>(1400, processor.ResizeSize.Value.Width);
 
             processor.Execute(filePath);
-
 
             string distPath = Path.Combine("Resources", "減色済" + Path.GetFileName(filePath));
             Assert.IsTrue(File.Exists(distPath));

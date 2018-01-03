@@ -16,6 +16,8 @@
         [DataRow(@"Resources\ExcelJpeg.xlsx")]
         public void ExecuteTest(string filePath)
         {
+            Assert.IsNull(processor.ResizeSize);
+
             processor.Execute(filePath);
             string distPath = Path.Combine("Resources", "減色済" + Path.GetFileName(filePath));
             Assert.IsTrue(File.Exists(distPath));

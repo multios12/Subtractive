@@ -34,5 +34,29 @@ namespace Subtractive.Properties {
                 this["FileNameTemplate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("800")]
+        public int ResizeMinHeight {
+            get {
+                return ((int)(this["ResizeMinHeight"]));
+            }
+            set {
+                this["ResizeMinHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1400")]
+        public int ResizeMinWidth {
+            get {
+                return ((int)(this["ResizeMinWidth"]));
+            }
+            set {
+                this["ResizeMinWidth"] = value;
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace Subtractive.Processor
 {
     using System;
+    using System.Drawing;
 
     /// <summary>
     /// 対応しないファイルのための処理クラス
@@ -9,6 +10,9 @@
     {
         /// <summary>拡張子</summary>
         public string[] Extensions => new string[] { string.Empty };
+
+        /// <summary>リサイズ時の最大サイズ</summary>
+        public Size? ResizeSize { get; set; } = null;
 
         /// <summary>
         /// 処理を実行します

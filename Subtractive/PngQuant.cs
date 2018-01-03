@@ -2,8 +2,11 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Drawing;
     using System.IO;
     using System.IO.Compression;
+    using ImageProcessor;
+    using ImageProcessor.Imaging;
 
     /// <summary>PNG減色処理クラス</summary>
     public class PngQuant : IDisposable
@@ -11,10 +14,17 @@
         /// <summary>一時フォルダパス</summary>
         private string temporaryFolderPath;
 
+        /// <summary>イメージファクトリ</summary>
+        private ImageFactory imageFactory = new ImageFactory();
+
+        /// <summary>リサイズ時の最大サイズ</summary>
+        private Size? size = null;
+
         /// <summary>コンストラクタ</summary>
-        public PngQuant()
+        /// <param name="size">サイズ</param>
+        public PngQuant(Size? size = null)
         {
-            // 一時フォルダの作成
+            this.size = size;
             this.temporaryFolderPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(this.temporaryFolderPath);
         }
@@ -24,7 +34,7 @@
         {
             get
             {
-                return this.TemporaryFolderPath;
+                return this.temporaryFolderPath;
             }
         }
 
@@ -86,9 +96,35 @@
             return false;
         }
 
-        /// <summary>指定したpngファイルを減色します。</summary>
+        /// <summary>指定した画像ファイルを減色します。</summary>
+        /// <param name="entry">ZIPエントリ</param>
+        /// <returns>ファイルパス</returns>
+        public string Subtractive(ZipArchiveEntry entry)
+        {
+            string entryFilePath = Path.Combine(this.TemporaryFolderPath, Path.GetRandomFileName() + ".png");
+
+            if (this.size != null)
+            {
+                ImageProcessor.Imaging.Formats.PngFormat pngFormat = new ImageProcessor.Imaging.Formats.PngFormat();
+                ResizeLayer resizeLayer = new ResizeLayer(new Size(1400, 800), ResizeMode.Min);
+                this.imageFactory.Load(ImageExtensions.FromEntry(entry))
+                    .Resize(resizeLayer)
+                    .Format(pngFormat)
+                    .Save(entryFilePath);
+            }
+            else
+            {
+                entry.ExtractToPngFile(entryFilePath);
+            }
+
+            this.Subtractive(entryFilePath);
+            return entryFilePath;
+        }
+
+        /// <summary>指定した画像ファイルを減色します。</summary>
         /// <param name="filePath">pngファイルのファイルパス</param>
-        public void Subtractive(string filePath)
+        /// <returns>ファイルパス</returns>
+        public string Subtractive(string filePath)
         {
             // pngquant.exeが展開されていない場合、展開します。
             if (this._exePath == null)
@@ -96,7 +132,7 @@
                 bool existsExe = this.SearchPngquantExe();
                 if (!existsExe)
                 {
-                    return;
+                    return filePath;
                 }
             }
 
@@ -110,6 +146,7 @@
             process.StartInfo.UseShellExecute = false;
             process.Start();
             process.WaitForExit();
+            return filePath;
         }
 
         /// <summary>アンマネージ リソースの解放およびリセットに関連付けられているアプリケーション定義のタスクを実行します。</summary>
@@ -120,6 +157,8 @@
             {
                 if (disposing)
                 {
+                    this.imageFactory.Dispose();
+
                     // 一時フォルダを削除します。
                     Directory.Delete(this.temporaryFolderPath, true);
                 }

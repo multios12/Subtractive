@@ -29,17 +29,5 @@
                 entry.ExtractToFile(filePath);
             }
         }
-
-        /// <summary>指定したエントリをPNGファイルとして保存し、減色します。</summary>
-        /// <param name="entry">エントリ</param>
-        /// <param name="pngQuant">pngQuant</param>
-        /// <returns>ファイルパス</returns>
-        public static string SubtractiveToTemporaryFile(this ZipArchiveEntry entry, PngQuant pngQuant)
-        {
-            string entryFilePath = Path.Combine(pngQuant.TemporaryFolderPath, Path.GetRandomFileName() + ".png");
-            entry.ExtractToPngFile(entryFilePath);
-            pngQuant.Subtractive(entryFilePath);
-            return entryFilePath;
-        }
     }
 }
