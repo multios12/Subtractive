@@ -14,7 +14,7 @@
         [STAThread]
         private static void Main(string[] args)
         {
-            if (args.Length != 1)
+            if (args.Length < 1)
             {
                 Console.WriteLine(Properties.Resources.CopyRight + "ファイルパスを指定してください");
                 return;
