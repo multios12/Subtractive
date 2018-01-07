@@ -122,9 +122,34 @@
         }
 
         /// <summary>指定した画像ファイルを減色します。</summary>
+        /// <param name="stream">ストリーム</param>
+        /// <returns>ファイルパス</returns>
+        public string Subtractive(Stream stream)
+        {
+            string entryFilePath = Path.Combine(this.TemporaryFolderPath, Path.GetRandomFileName() + ".png");
+
+            if (this.size != null)
+            {
+                ImageProcessor.Imaging.Formats.PngFormat pngFormat = new ImageProcessor.Imaging.Formats.PngFormat();
+                ResizeLayer resizeLayer = new ResizeLayer(new Size(1400, 800), ResizeMode.Min);
+                this.imageFactory.Load(Image.FromStream(stream))
+                    .Resize(resizeLayer)
+                    .Format(pngFormat)
+                    .Save(entryFilePath);
+            }
+            else
+            {
+                stream.ExtractToPngFile(entryFilePath);
+            }
+
+            this.Subtractive(entryFilePath);
+            return entryFilePath;
+        }
+
+        /// <summary>指定した画像ファイルを減色します。</summary>
         /// <param name="filePath">pngファイルのファイルパス</param>
         /// <returns>ファイルパス</returns>
-        public string Subtractive(string filePath)
+            public string Subtractive(string filePath)
         {
             // pngquant.exeが展開されていない場合、展開します。
             if (this._exePath == null)

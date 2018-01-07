@@ -1,5 +1,6 @@
 ﻿namespace Subtractive
 {
+    using System.Drawing;
     using System.IO;
 
     /// <summary>
@@ -43,6 +44,19 @@
         public static MemoryStream ToMemoryStream(this Stream stream, int length)
         {
             return new MemoryStream(ToByteArray(stream, length));
+        }
+
+        /// <summary>
+        /// 指定されたストリームをpngファイルとして保存します
+        /// </summary>
+        /// <param name="stream">stream</param>
+        /// <param name="filePath">ファイルパス</param>
+        public static void ExtractToPngFile(this Stream stream, string filePath)
+        {
+            using (var image = Image.FromStream(stream))
+            {
+                image.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+            }
         }
     }
 }
