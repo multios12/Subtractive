@@ -5,14 +5,14 @@
     /// <summary>
     /// ファイルネーム変更イベントデータ
     /// </summary>
-    public class QuantedEventArgs : EventArgs
+    public class FileNameChangedEventArgs : EventArgs
     {
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="oldFileName">変更前ファイル名</param>
         /// <param name="newFileName">変更後ファイル名</param>
-        public QuantedEventArgs(string oldFileName, string newFileName)
+        public FileNameChangedEventArgs(string oldFileName, string newFileName)
         {
             this.OldFileName = oldFileName;
             this.NewFileName = newFileName;

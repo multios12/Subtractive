@@ -39,10 +39,10 @@
         }
 
         /// <summary>disposeが完了した場合、true</summary>
-        private bool _disposed { get; set; }
+        private bool Disposed { get; set; }
 
         /// <summary>PngQuant.exeファイルのパス</summary>
-        private string _exePath { get; set; }
+        private string ExePath { get; set; }
 
         /// <summary>アンマネージ リソースの解放およびリセットに関連付けられているアプリケーション定義のタスクを実行します。</summary>
         public void Dispose()
@@ -62,7 +62,7 @@
             string exePath = Path.Combine(appPath, "pngquant.exe");
             if (File.Exists(exePath))
             {
-                this._exePath = exePath;
+                this.ExePath = exePath;
                 return true;
             }
 
@@ -88,7 +88,7 @@
                     }
 
                     entry.ExtractToFile(exePath);
-                    this._exePath = exePath;
+                    this.ExePath = exePath;
                     return true;
                 }
             }
@@ -152,7 +152,7 @@
             public string Subtractive(string filePath)
         {
             // pngquant.exeが展開されていない場合、展開します。
-            if (this._exePath == null)
+            if (this.ExePath == null)
             {
                 bool existsExe = this.SearchPngquantExe();
                 if (!existsExe)
@@ -165,7 +165,7 @@
             argument = string.Format(argument, filePath);
 
             Process process = new Process();
-            process.StartInfo.FileName = this._exePath;
+            process.StartInfo.FileName = this.ExePath;
             process.StartInfo.Arguments = argument;
             process.StartInfo.CreateNoWindow = true;
             process.StartInfo.UseShellExecute = false;
@@ -178,7 +178,7 @@
         /// <param name="disposing">ディスポーズ</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!this.Disposed)
             {
                 if (disposing)
                 {
@@ -189,7 +189,7 @@
                 }
             }
 
-            this._disposed = true;
+            this.Disposed = true;
         }
     }
 }

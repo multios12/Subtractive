@@ -24,7 +24,7 @@
         }
 
         /// <summary>ファイル名変更完了イベント</summary>
-        public event EventHandler<QuantedEventArgs> FileNameChanged;
+        public event EventHandler<FileNameChangedEventArgs> FileNameChanged;
 
         /// <summary>拡張子</summary>
         public virtual string[] Extensions => new string[] { ".zip" };
@@ -84,7 +84,7 @@
                     Console.WriteLine("・{0}", entry.FullName);
 
                     // 変換イベントを発生させる
-                    this.FileNameChanged?.Invoke(this, new QuantedEventArgs(entry.FullName, distEntryName));
+                    this.FileNameChanged?.Invoke(this, new FileNameChangedEventArgs(entry.FullName, distEntryName));
                 }
             }
         }

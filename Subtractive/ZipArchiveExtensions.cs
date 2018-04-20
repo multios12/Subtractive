@@ -49,6 +49,7 @@
         /// </summary>
         /// <param name="zipArchive">アーカイブファイル</param>
         /// <param name="entryPath">読み取るエントリ</param>
+        /// <returns>イメージ</returns>
         public static Image ReadImage(this ZipArchive zipArchive, string entryPath)
         {
             using (Stream stream = zipArchive.GetEntry(entryPath).Open())

@@ -62,7 +62,7 @@
         /// </summary>
         /// <param name="sender">発生元オブジェクト</param>
         /// <param name="e">イベントデータ</param>
-        private void WordProcessor_FileNameChanged(object sender, QuantedEventArgs e)
+        private void WordProcessor_FileNameChanged(object sender, FileNameChangedEventArgs e)
         {
             string target = string.Format("media/{0}", Path.GetFileName(e.OldFileName));
             foreach (var element in this.document.GetElementsByTagName("Relationship").Cast<XmlElement>()
