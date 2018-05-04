@@ -84,15 +84,20 @@
                     }
 
                     // 解凍して一時ファイルを作成し、減色する
-                    string entryFilePath;
+                    Stream tranStream;
                     using (Stream s = entry.OpenEntryStream())
                     {
-                        entryFilePath = pngquant.Subtractive(s);
+                        tranStream = pngquant.Subtractive(s);
                     }
 
                     // 減色したファイルをブックに再設定
-                    string distEntryName = PathUtils.ChangeExtension(entry.Key, Path.GetExtension(entryFilePath));
-                    distArchive.CreateEntryFromFile(entryFilePath, distEntryName, CompressionLevel.Optimal);
+                    string distEntryName = PathUtils.ChangeExtension(entry.Key, ".png");
+                    var e = distArchive.CreateEntry(distEntryName, CompressionLevel.NoCompression);
+                    using (var stream = e.Open())
+                    {
+                        tranStream.CopyTo(stream);
+                    }
+
                     Console.WriteLine("・{0}", entry.Key);
 
                     // 変換イベントを発生させる
